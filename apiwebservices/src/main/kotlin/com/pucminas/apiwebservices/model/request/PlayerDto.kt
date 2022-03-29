@@ -1,11 +1,10 @@
-package com.pucminas.apiwebservices.model.dto
+package com.pucminas.apiwebservices.model.request
 
-import com.pucminas.apiwebservices.model.dto.ClubDto
 import java.io.Serializable
 
 data class PlayerDto(
     val name: String? = null,
     val birthDate: String? = null,
     val country: String? = null,
-    val club: ClubDto? = null
+    val club: ClubRequest? = null
 ) : Serializable

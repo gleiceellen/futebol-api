@@ -1,4 +1,4 @@
-package com.pucminas.apiwebservices.model.dto
+package com.pucminas.apiwebservices.model.request
 
 import java.io.Serializable
 
