@@ -14,6 +14,7 @@ class TransferService(
     private val clubService: ClubService,
 ) {
     fun createTransfer(transferInsertDto: TransferInsertDto): Transfer {
+
         val player = playerService.getPlayer(transferInsertDto.playerId)
             ?: throw TransferCreateException(TransferCreateException.PLAYER_NOT_FOUND)
 
@@ -22,6 +23,9 @@ class TransferService(
 
         val destinationClub = clubService.getClub(transferInsertDto.destinationClubId)
             ?: throw TransferCreateException(TransferCreateException.DESTINATION_CLUB_NOT_FOUND)
+
+        clubService.removePlayerFromClub(originClub.id!!, player.id!!)
+        clubService.addPlayerToClub(destinationClub, player)
 
         val transfer = Transfer(
                 player = player,

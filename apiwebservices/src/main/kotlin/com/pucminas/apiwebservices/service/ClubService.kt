@@ -103,6 +103,17 @@ class ClubService(
         else throw ClubUpdateException(ClubUpdateException.NOT_FOUND)
     }
 
+    fun addPlayerToClub(
+            club: Club,
+            player: Player
+    ) {
+        club.players.add(player)
+        player.club = club
+
+        clubRepository.save(club)
+        playerService.updatePlayer(player)
+    }
+
     private fun removeExistentPlayer(entity: Optional<Club>, playerId: Long): String {
         val club = entity.get()
         val player = club.players
