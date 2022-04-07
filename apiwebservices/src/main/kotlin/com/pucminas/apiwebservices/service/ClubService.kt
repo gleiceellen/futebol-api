@@ -6,7 +6,9 @@ import com.pucminas.apiwebservices.model.request.ClubRequest
 import com.pucminas.apiwebservices.model.request.ClubUpdateRequest
 import com.pucminas.apiwebservices.model.request.clubRequestToClub
 import com.pucminas.apiwebservices.repository.ClubRepository
+import com.pucminas.apiwebservices.exception.ClubUpdateException
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class ClubService(
@@ -20,18 +22,48 @@ class ClubService(
         return clubRepository.save(club.clubRequestToClub())
     }
 
-    fun updateClub(club: ClubUpdateRequest): Club? {
-        val clubFound = clubRepository.getById(club.id)
-        val clubToUpdate = Club(
-            id = clubFound.id,
-            name = club.name ?: clubFound.name,
-            location = club.location ?: clubFound.location
-        )
-        return clubToUpdate
+    fun updateClub(club: ClubUpdateRequest, clubId: Long): Club? {
+        val search = clubRepository.findById(clubId)
+
+        return if(search.isPresent) {
+            handleUpdateExistentClub(search, club)
+        }
+        else {
+            handleUpdateNotExistentClub(club)
+        }
     }
 
-    fun deleteClub(club: ClubRequest): String {
-        clubRepository.delete(club.clubRequestToClub())
-        return "Resource deteled with success"
+    private fun handleUpdateNotExistentClub(club: ClubUpdateRequest) =
+        if (club.name != null && club.location != null) {
+            val clubToInsert = Club(
+                    name = club.name,
+                    location = club.location)
+
+            clubRepository.save(clubToInsert)
+        } else
+            throw ClubUpdateException(ClubUpdateException.CANT_UPDATE_OR_INSERT)
+
+    private fun handleUpdateExistentClub(search: Optional<Club>, club: ClubUpdateRequest): Club {
+        val clubStored = search.get()
+
+        val clubUpdated = Club(
+                id = clubStored.id,
+                name = club.name ?: clubStored.name,
+                location = club.location ?: clubStored.location
+        )
+        return clubRepository.save(clubUpdated)
+    }
+
+    fun deleteClub(clubId: Long): String {
+        val entity = clubRepository.findById(clubId)
+
+        return if(entity.isPresent) {
+            val club = entity.get()
+            clubRepository.delete(club)
+            "entity removed"
+        }
+        else {
+            "entity does not exists"
+        }
     }
 }

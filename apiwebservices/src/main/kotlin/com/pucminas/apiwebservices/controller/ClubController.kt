@@ -14,7 +14,7 @@ class ClubController(
 ) {
 
     @PostMapping("/club")
-    fun createClub(club: ClubRequest): ResponseEntity<Club> {
+    fun createClub(@RequestBody club: ClubRequest): ResponseEntity<Club> {
         return ResponseEntity.ok(clubService.createClub(club))
     }
 
@@ -23,13 +23,16 @@ class ClubController(
         return ResponseEntity.ok(clubService.getClubs())
     }
 
-    @PutMapping("/club")
-    fun updateClub(club: ClubUpdateRequest): ResponseEntity<Club> {
-        return ResponseEntity.ok(clubService.updateClub(club))
+    @PutMapping("/club/{id}")
+    fun updateClub(
+            @PathVariable(value = "id") clubId: Long,
+            @RequestBody club: ClubUpdateRequest
+    ): ResponseEntity<Club> {
+        return ResponseEntity.ok(clubService.updateClub(club, clubId))
     }
 
-    @DeleteMapping("/club")
-    fun deleteClub(club: ClubRequest): ResponseEntity<*> {
-        return ResponseEntity.ok(clubService.deleteClub(club))
+    @DeleteMapping("/club/{id}")
+    fun deleteClub(@PathVariable(value = "id") clubId: Long): ResponseEntity<*> {
+        return ResponseEntity.ok(clubService.deleteClub(clubId))
     }
 }
