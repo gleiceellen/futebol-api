@@ -7,7 +7,7 @@ data class ClubInsertDto(
     val name: String,
     val location: String,
     val titles: List<String>? = null,
-    val players: List<PlayerInsertDto> = emptyList()
+    val players: MutableList<PlayerInsertDto> = mutableListOf()
 )
 
 data class ClubUpdateDto(
@@ -20,5 +20,5 @@ data class ClubUpdateDto(
 fun ClubInsertDto.toClub() = Club(
     name = this.name,
     location = this.location,
-    players = this.players.map { playerInsertDto -> playerInsertDto.toPlayer() }
+    players = this.players.map { playerInsertDto -> playerInsertDto.toPlayer() }.toMutableList()
 )

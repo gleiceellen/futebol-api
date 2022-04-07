@@ -19,10 +19,3 @@ fun PlayerInsertDto.toPlayer() = Player(
         birthDate = this.birthDate,
         country = this.country
 )
-
-data class PlayerCompleteDto(
-        val name: String? = null,
-        val birthDate: String? = null,
-        val country: String? = null,
-        val club: ClubInsertDto? = null
-)

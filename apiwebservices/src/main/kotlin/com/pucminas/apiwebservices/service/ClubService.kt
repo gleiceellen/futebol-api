@@ -18,6 +18,16 @@ class ClubService(
         return clubRepository.findAll()
     }
 
+    fun getClub(clubId: Long): Club? {
+
+        val search = clubRepository.findById(clubId)
+
+        return if(search.isPresent)
+            search.get()
+        else
+            null
+    }
+
     fun createClub(clubInsert: ClubInsertDto): Club {
         return clubRepository.save(clubInsert.toClub())
     }
@@ -65,5 +75,25 @@ class ClubService(
         else {
             "entity does not exists"
         }
+    }
+
+    fun deletePlayer(
+            clubId: Long,
+            playerId: Long
+    ): String {
+        val entity = clubRepository.findById(clubId)
+
+        return if(entity.isPresent) {
+            val club = entity.get()
+            val player = club.players
+                    .find { it.id == playerId }
+                    ?: throw ClubUpdateException(ClubUpdateException.PLAYER_NOT_FOUND)
+
+            club.players.remove(player)
+            clubRepository.save(club)
+
+            "player removed"
+        }
+        else throw ClubUpdateException(ClubUpdateException.NOT_FOUND)
     }
 }

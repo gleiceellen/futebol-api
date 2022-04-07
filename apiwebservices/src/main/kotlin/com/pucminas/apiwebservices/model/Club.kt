@@ -12,5 +12,5 @@ class Club(
         val location: String,
 
         @OneToMany(cascade = [CascadeType.ALL])
-        val players: List<Player> = emptyList()
+        val players: MutableList<Player> = mutableListOf()
 )
