@@ -13,8 +13,20 @@ class ExceptionHandler {
 
 
     @ExceptionHandler(ClubUpdateException::class)
-    fun  handleConflict(
+    fun  handleClubUpdateErrors(
         exception: ClubUpdateException
+    ): ResponseEntity<Map<String,String>> {
+
+        val body: MutableMap<String, String> = HashMap()
+        body["timestamp"] = LocalDateTime.now().toString()
+        body["message"] = exception.message.toString()
+
+        return ResponseEntity<Map<String,String>>(body, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(TransferCreateException::class)
+    fun  handleTransferCreationErrors(
+            exception: TransferCreateException
     ): ResponseEntity<Map<String,String>> {
 
         val body: MutableMap<String, String> = HashMap()

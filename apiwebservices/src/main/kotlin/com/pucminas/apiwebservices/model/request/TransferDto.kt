@@ -1,10 +1,14 @@
 package com.pucminas.apiwebservices.model.request
 
-import java.io.Serializable
+import org.apache.juli.logging.Log
 
-data class TransferDto(
-    val originClub: String? = null,
-    val destinationClub: String? = null,
-    val date: String? = null,
-    val amount: String? = null
-) : Serializable
+data class TransferInsertDto(
+    val originClubId: Long,
+    val destinationClubId: Long,
+    val playerId: Long,
+    val date: String,
+    val amount: String,
+
+)
+
+
