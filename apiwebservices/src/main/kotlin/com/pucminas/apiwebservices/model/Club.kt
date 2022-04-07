@@ -1,4 +1,5 @@
-import java.util.*
+package com.pucminas.apiwebservices.model
+
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -12,5 +13,4 @@ class Club(
         var id: Long? = null,
         val name: String,
         val location: String,
-        val titles: List<String>? = null
 )

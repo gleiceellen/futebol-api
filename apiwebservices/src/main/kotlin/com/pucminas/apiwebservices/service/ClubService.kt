@@ -1,6 +1,7 @@
 package com.pucminas.apiwebservices.service
 
-import Club
+
+import com.pucminas.apiwebservices.model.Club
 import com.pucminas.apiwebservices.model.request.ClubRequest
 import com.pucminas.apiwebservices.model.request.ClubUpdateRequest
 import com.pucminas.apiwebservices.model.request.clubRequestToClub
@@ -24,7 +25,6 @@ class ClubService(
         val clubToUpdate = Club(
             id = clubFound.id,
             name = club.name ?: clubFound.name,
-            titles = club.titles ?: clubFound.titles,
             location = club.location ?: clubFound.location
         )
         return clubToUpdate

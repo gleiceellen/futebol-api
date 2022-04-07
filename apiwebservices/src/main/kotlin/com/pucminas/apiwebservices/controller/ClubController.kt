@@ -1,6 +1,7 @@
 package com.pucminas.apiwebservices.controller
 
-import Club
+
+import com.pucminas.apiwebservices.model.Club
 import com.pucminas.apiwebservices.model.request.ClubRequest
 import com.pucminas.apiwebservices.model.request.ClubUpdateRequest
 import com.pucminas.apiwebservices.service.ClubService

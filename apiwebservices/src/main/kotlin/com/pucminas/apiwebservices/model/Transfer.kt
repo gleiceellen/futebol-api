@@ -1,4 +1,4 @@
-package com.pucminas.futebolapi.model
+package com.pucminas.apiwebservices.model
 
 import javax.persistence.Column
 import javax.persistence.Entity

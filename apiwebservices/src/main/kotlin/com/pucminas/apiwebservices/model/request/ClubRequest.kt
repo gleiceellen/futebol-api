@@ -1,6 +1,7 @@
 package com.pucminas.apiwebservices.model.request
 
-import Club
+
+import com.pucminas.apiwebservices.model.Club
 import java.io.Serializable
 
 data class ClubRequest(
@@ -18,6 +19,5 @@ data class ClubUpdateRequest(
 
 fun ClubRequest.clubRequestToClub() = Club(
     name = this.name,
-    location = this.location,
-    titles = this.titles
+    location = this.location
 )

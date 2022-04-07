@@ -1,7 +1,10 @@
+package com.pucminas.apiwebservices.model
+
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.OneToMany
+import javax.persistence.OneToOne
 
 @Entity
 class Player(
@@ -11,6 +14,6 @@ class Player(
         val name: String,
         val birthDate: String,
         val country: String,
-        @OneToMany
+        @OneToOne
         val club: Club
 )
