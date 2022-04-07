@@ -3,6 +3,7 @@ package com.pucminas.apiwebservices.model.reponse
 import com.pucminas.apiwebservices.model.Player
 
 data class PlayerResponseDto(
+        val id: Long,
         val name: String? = null,
         val birthDate: String? = null,
         val country: String? = null,
@@ -17,6 +18,7 @@ data class PlayerResponseDto(
                 null
 
             return PlayerResponseDto(
+                id = player.id!!,
                 name = player.name,
                 country = player.country,
                 birthDate = player.birthDate,
@@ -27,7 +29,21 @@ data class PlayerResponseDto(
 }
 
 data class PlayerPartialResponseDto(
+    val id: Long,
     val name: String? = null,
     val birthDate: String? = null,
     val country: String? = null
 )
+{
+    companion object {
+        fun fromPlayer(player: Player): PlayerPartialResponseDto {
+            return PlayerPartialResponseDto(
+                id = player.id!!,
+                name = player.name,
+                country = player.country,
+                birthDate = player.birthDate
+            )
+        }
+    }
+}
+
