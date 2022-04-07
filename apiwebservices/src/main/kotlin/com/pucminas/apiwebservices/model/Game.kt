@@ -16,8 +16,8 @@ class Game(
         val guestClub: Club,
 
         val date: String,
-        val startTime: String? = null,
-        val endTime: String? = null,
+        var startTime: String? = null,
+        var endTime: String? = null,
 
         @ManyToOne
         var contest: Contest? = null

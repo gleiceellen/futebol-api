@@ -9,7 +9,9 @@ data class GameResponseDto(
         val id: Long,
         val ownerClub: ClubPartialResponseDto,
         val guestClub: ClubPartialResponseDto,
-        val date: String
+        val date: String,
+        val startTime: String? = null,
+        val endTime: String? = null,
 ) {
     companion object {
         fun fromGame(game: Game): GameResponseDto {
@@ -17,7 +19,9 @@ data class GameResponseDto(
                     id = game.id!!,
                     ownerClub = ClubPartialResponseDto.fromClub(game.ownerClub),
                     guestClub = ClubPartialResponseDto.fromClub(game.guestClub),
-                    date = game.date
+                    date = game.date,
+                    startTime = game.startTime,
+                    endTime = game.endTime
             )
         }
     }

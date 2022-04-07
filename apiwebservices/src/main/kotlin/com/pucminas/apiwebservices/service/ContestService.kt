@@ -1,14 +1,13 @@
 package com.pucminas.apiwebservices.service
 
 import com.pucminas.apiwebservices.exception.GameCreateException
-import com.pucminas.apiwebservices.exception.PlayerUpdateException
+import com.pucminas.apiwebservices.exception.GameEventException
 import com.pucminas.apiwebservices.model.Contest
 import com.pucminas.apiwebservices.model.Game
-import com.pucminas.apiwebservices.model.Player
 import com.pucminas.apiwebservices.model.request.*
 import com.pucminas.apiwebservices.repository.ContestRepository
-import com.pucminas.apiwebservices.repository.PlayerRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.*
 
 @Service
@@ -36,7 +35,6 @@ class ContestService(
       else{
          throw GameCreateException(GameCreateException.CONTEST_CLUB_NOT_FOUND)
       }
-
    }
 
    private fun createGameForExistentContest(search: Optional<Contest>, gameInsertDto: GameInsertDto): Game {
@@ -50,5 +48,24 @@ class ContestService(
 
       val savedGame = updatedContest.games.last()
       return savedGame
+   }
+
+   fun startGame(contestId: Long, gameId: Long): Game {
+      val contestSearch = contestRepository.findById(contestId)
+
+      if(contestSearch.isPresent.not())
+         throw GameEventException(GameEventException.CONTEST_NOT_FOUND)
+
+      val gameSearch = gameService.getGame(gameId)
+
+      if(gameSearch.isPresent.not())
+         throw GameEventException(GameEventException.GAME_NOT_FOUND)
+
+      val contest = contestSearch.get()
+      val game = gameSearch.get()
+
+      game.startTime = LocalDateTime.now().toString()
+
+      return gameService.updateGame(game)
    }
 }

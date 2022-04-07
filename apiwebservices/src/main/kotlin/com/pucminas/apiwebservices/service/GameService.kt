@@ -35,4 +35,12 @@ class GameService(
    fun getGames(): List<Game> {
       return gameRepository.findAll()
    }
+
+   fun getGame(gameId: Long): Optional<Game> {
+      return gameRepository.findById(gameId)
+   }
+
+   fun updateGame(game: Game): Game {
+      return gameRepository.save(game)
+   }
 }
