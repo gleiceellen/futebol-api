@@ -35,4 +35,16 @@ class ExceptionHandler {
 
         return ResponseEntity<Map<String,String>>(body, HttpStatus.BAD_REQUEST)
     }
+
+    @ExceptionHandler(GameEventException::class)
+    fun  handleGameEventErrors(
+            exception: GameEventException
+    ): ResponseEntity<Map<String,String>> {
+
+        val body: MutableMap<String, String> = HashMap()
+        body["timestamp"] = LocalDateTime.now().toString()
+        body["message"] = exception.message.toString()
+
+        return ResponseEntity<Map<String,String>>(body, HttpStatus.BAD_REQUEST)
+    }
 }

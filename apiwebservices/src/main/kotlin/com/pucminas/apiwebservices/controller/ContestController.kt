@@ -40,11 +40,20 @@ class ContestController(
     }
 
     @PostMapping("/contests/{contest-id}/games/{game-id}/events/start")
-    fun createGame(
+    fun startGame(
             @PathVariable(value = "contest-id") contestId: Long,
             @PathVariable(value = "game-id") gameId: Long,
     ): ResponseEntity<*> {
         val game = contestService.startGame(contestId, gameId)
+        return ResponseEntity.ok(ContestResponseDto.fromContest(game.contest!!))
+    }
+
+    @PostMapping("/contests/{contest-id}/games/{game-id}/events/finish")
+    fun finishGame(
+            @PathVariable(value = "contest-id") contestId: Long,
+            @PathVariable(value = "game-id") gameId: Long,
+    ): ResponseEntity<*> {
+        val game = contestService.finishGame(contestId, gameId)
         return ResponseEntity.ok(ContestResponseDto.fromContest(game.contest!!))
     }
 }

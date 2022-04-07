@@ -61,10 +61,36 @@ class ContestService(
       if(gameSearch.isPresent.not())
          throw GameEventException(GameEventException.GAME_NOT_FOUND)
 
-      val contest = contestSearch.get()
       val game = gameSearch.get()
 
+      if(game.startTime != null)
+         throw GameEventException(GameEventException.GAME_ALREADY_STARTED)
+
       game.startTime = LocalDateTime.now().toString()
+
+      return gameService.updateGame(game)
+   }
+
+   fun finishGame(contestId: Long, gameId: Long): Game {
+      val contestSearch = contestRepository.findById(contestId)
+
+      if(contestSearch.isPresent.not())
+         throw GameEventException(GameEventException.CONTEST_NOT_FOUND)
+
+      val gameSearch = gameService.getGame(gameId)
+
+      if(gameSearch.isPresent.not())
+         throw GameEventException(GameEventException.GAME_NOT_FOUND)
+
+      val game = gameSearch.get()
+
+      game.startTime ?:
+         throw GameEventException(GameEventException.GAME_NOT_STARTED)
+
+      if(game.endTime != null)
+         return game
+
+      game.endTime = LocalDateTime.now().toString()
 
       return gameService.updateGame(game)
    }
