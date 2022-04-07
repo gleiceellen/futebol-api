@@ -2,8 +2,8 @@ package com.pucminas.apiwebservices.controller
 
 
 import com.pucminas.apiwebservices.model.Club
-import com.pucminas.apiwebservices.model.request.ClubRequest
-import com.pucminas.apiwebservices.model.request.ClubUpdateRequest
+import com.pucminas.apiwebservices.model.request.ClubInsertDto
+import com.pucminas.apiwebservices.model.request.ClubUpdateDto
 import com.pucminas.apiwebservices.service.ClubService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -14,7 +14,7 @@ class ClubController(
 ) {
 
     @PostMapping("/club")
-    fun createClub(@RequestBody club: ClubRequest): ResponseEntity<Club> {
+    fun createClub(@RequestBody club: ClubInsertDto): ResponseEntity<Club> {
         return ResponseEntity.ok(clubService.createClub(club))
     }
 
@@ -26,7 +26,7 @@ class ClubController(
     @PutMapping("/club/{id}")
     fun updateClub(
             @PathVariable(value = "id") clubId: Long,
-            @RequestBody club: ClubUpdateRequest
+            @RequestBody club: ClubUpdateDto
     ): ResponseEntity<Club> {
         return ResponseEntity.ok(clubService.updateClub(club, clubId))
     }

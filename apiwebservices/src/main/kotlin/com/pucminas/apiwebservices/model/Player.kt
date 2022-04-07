@@ -1,19 +1,16 @@
 package com.pucminas.apiwebservices.model
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
+import javax.persistence.*
 
 @Entity
 class Player(
         @Id
+        @GeneratedValue
         @Column(name = "id", nullable = false)
         var id: Long? = null,
         val name: String,
         val birthDate: String,
         val country: String,
-        @OneToOne
-        val club: Club
+        @ManyToOne
+        val club: Club? = null
 )

@@ -2,9 +2,9 @@ package com.pucminas.apiwebservices.service
 
 
 import com.pucminas.apiwebservices.model.Club
-import com.pucminas.apiwebservices.model.request.ClubRequest
-import com.pucminas.apiwebservices.model.request.ClubUpdateRequest
-import com.pucminas.apiwebservices.model.request.clubRequestToClub
+import com.pucminas.apiwebservices.model.request.ClubInsertDto
+import com.pucminas.apiwebservices.model.request.ClubUpdateDto
+import com.pucminas.apiwebservices.model.request.toClub
 import com.pucminas.apiwebservices.repository.ClubRepository
 import com.pucminas.apiwebservices.exception.ClubUpdateException
 import org.springframework.stereotype.Service
@@ -18,11 +18,11 @@ class ClubService(
         return clubRepository.findAll()
     }
 
-    fun createClub(club: ClubRequest): Club {
-        return clubRepository.save(club.clubRequestToClub())
+    fun createClub(clubInsert: ClubInsertDto): Club {
+        return clubRepository.save(clubInsert.toClub())
     }
 
-    fun updateClub(club: ClubUpdateRequest, clubId: Long): Club? {
+    fun updateClub(club: ClubUpdateDto, clubId: Long): Club? {
         val search = clubRepository.findById(clubId)
 
         return if(search.isPresent) {
@@ -33,7 +33,7 @@ class ClubService(
         }
     }
 
-    private fun handleUpdateNotExistentClub(club: ClubUpdateRequest) =
+    private fun handleUpdateNotExistentClub(club: ClubUpdateDto) =
         if (club.name != null && club.location != null) {
             val clubToInsert = Club(
                     name = club.name,
@@ -43,7 +43,7 @@ class ClubService(
         } else
             throw ClubUpdateException(ClubUpdateException.CANT_UPDATE_OR_INSERT)
 
-    private fun handleUpdateExistentClub(search: Optional<Club>, club: ClubUpdateRequest): Club {
+    private fun handleUpdateExistentClub(search: Optional<Club>, club: ClubUpdateDto): Club {
         val clubStored = search.get()
 
         val clubUpdated = Club(

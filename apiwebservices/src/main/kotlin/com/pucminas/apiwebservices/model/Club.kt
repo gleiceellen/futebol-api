@@ -1,9 +1,6 @@
 package com.pucminas.apiwebservices.model
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
 class Club(
@@ -13,4 +10,7 @@ class Club(
         var id: Long? = null,
         val name: String,
         val location: String,
+
+        @OneToMany(cascade = [CascadeType.ALL])
+        val players: List<Player> = emptyList()
 )
