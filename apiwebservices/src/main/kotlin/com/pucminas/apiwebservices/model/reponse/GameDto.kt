@@ -12,7 +12,8 @@ data class GameResponseDto(
         val endTime: String? = null,
 
         val goals: List<GoalPartialResponseDto> = emptyList(),
-        val intervals: List<IntervalResponseDto> = emptyList()
+        val intervals: List<IntervalResponseDto> = emptyList(),
+        val increment: List<IncrementResponseDto> = emptyList()
 ) {
     companion object {
         fun fromGame(game: Game): GameResponseDto {
@@ -24,7 +25,8 @@ data class GameResponseDto(
                     startTime = game.startTime,
                     endTime = game.endTime,
                     goals = game.goals.map { GoalPartialResponseDto.fromGoal(it) },
-                    intervals = game.intervalls.map { IntervalResponseDto.fromInterval(it) }
+                    intervals = game.intervalls.map { IntervalResponseDto.fromInterval(it) },
+                    increment = game.increments.map { IncrementResponseDto.fromIncrement(it) }
             )
         }
     }

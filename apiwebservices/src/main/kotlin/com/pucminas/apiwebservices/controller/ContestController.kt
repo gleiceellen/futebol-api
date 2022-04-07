@@ -74,4 +74,14 @@ class ContestController(
         val game = contestService.registerInterval(contestId, gameId, intervalInsertDto)
         return ResponseEntity.ok(ContestResponseDto.fromContest(game.contest!!))
     }
+
+    @PostMapping("/contests/{contest-id}/games/{game-id}/events/increment")
+    fun registerIncrement(
+            @PathVariable(value = "contest-id") contestId: Long,
+            @PathVariable(value = "game-id") gameId: Long,
+            @RequestBody incrementInsertDto: IncrementInsertDto
+    ): ResponseEntity<*> {
+        val game = contestService.registerIncrement(contestId, gameId, incrementInsertDto)
+        return ResponseEntity.ok(ContestResponseDto.fromContest(game.contest!!))
+    }
 }

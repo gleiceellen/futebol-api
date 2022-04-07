@@ -26,5 +26,8 @@ class Game(
         var goals: MutableList<Goal> = mutableListOf(),
 
         @OneToMany(cascade = [CascadeType.ALL])
-        var intervalls: MutableList<Intervall> = mutableListOf()
+        var intervalls: MutableList<Intervall> = mutableListOf(),
+
+        @OneToMany(cascade = [CascadeType.ALL])
+        var increments: MutableList<Increment> = mutableListOf()
 )
