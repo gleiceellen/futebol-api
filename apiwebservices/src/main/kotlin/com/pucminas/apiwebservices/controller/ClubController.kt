@@ -55,6 +55,6 @@ class ClubController(
             @PathVariable(value = "club-id") clubId: Long,
             @PathVariable(value = "player-id") playerId: Long
     ): ResponseEntity<*> {
-        return ResponseEntity.ok(clubService.deletePlayer(clubId, playerId))
+        return ResponseEntity.ok(clubService.removePlayerFromClub(clubId, playerId))
     }
 }

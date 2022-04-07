@@ -25,4 +25,8 @@ class PlayerService(
     fun deletePlayer(playerId: Long) {
         playerRepository.deleteById(playerId)
     }
+
+    fun updatePlayer(player: Player) {
+        playerRepository.save(player)
+    }
 }

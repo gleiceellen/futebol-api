@@ -91,24 +91,31 @@ class ClubService(
         }
     }
 
-    fun deletePlayer(
+    fun removePlayerFromClub(
             clubId: Long,
             playerId: Long
     ): String {
         val entity = clubRepository.findById(clubId)
 
         return if(entity.isPresent) {
-            val club = entity.get()
-            val player = club.players
-                    .find { it.id == playerId }
-                    ?: throw ClubUpdateException(ClubUpdateException.PLAYER_NOT_FOUND)
-
-            club.players.remove(player)
-            clubRepository.save(club)
-
-            "player removed"
+            removeExistentPlayer(entity, playerId)
         }
         else throw ClubUpdateException(ClubUpdateException.NOT_FOUND)
+    }
+
+    private fun removeExistentPlayer(entity: Optional<Club>, playerId: Long): String {
+        val club = entity.get()
+        val player = club.players
+                .find { it.id == playerId }
+                ?: throw ClubUpdateException(ClubUpdateException.PLAYER_NOT_FOUND)
+
+        club.players.remove(player)
+        clubRepository.save(club)
+
+        player.club = null
+        playerService.updatePlayer(player)
+
+        return "player removed"
     }
 }
 
