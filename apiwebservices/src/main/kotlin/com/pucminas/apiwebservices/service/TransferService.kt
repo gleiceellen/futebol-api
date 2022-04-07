@@ -37,4 +37,16 @@ class TransferService(
 
         return transferRepository.save(transfer)
     }
+
+    fun getTransfers(): List<Transfer> {
+        return transferRepository.findAll()
+    }
+
+    fun getTransfer(transferId: Long): Transfer? {
+        val search = transferRepository.findById(transferId)
+        return if(search.isPresent)
+            search.get()
+        else
+            null
+    }
 }
