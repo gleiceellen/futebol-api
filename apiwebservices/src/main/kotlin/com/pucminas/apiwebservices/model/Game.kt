@@ -32,5 +32,8 @@ class Game(
         var increments: MutableList<Increment> = mutableListOf(),
 
         @OneToMany(cascade = [CascadeType.ALL])
-        var warnings: MutableList<Warning> = mutableListOf()
+        var warnings: MutableList<Warning> = mutableListOf(),
+
+        @OneToMany(cascade = [CascadeType.ALL])
+        var replacements: MutableList<Replacement> = mutableListOf()
 )

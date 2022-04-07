@@ -17,7 +17,8 @@ class ContestService(
     private val goalService: GoalService,
     private val intervalService: IntervalService,
     private val incrementService: IncrementService,
-    private val warningService: WarningService
+    private val warningService: WarningService,
+    private val replacementService: ReplacementService
 
 ) {
 
@@ -191,6 +192,28 @@ class ContestService(
       val newWarning = warningService.createWarning(warningInsertDto)
       newWarning.game = game
       game.warnings.add(newWarning)
+
+      return gameService.updateGame(game)
+   }
+
+   fun registerReplacement(contestId: Long, gameId: Long, replacementInsertDto: ReplacementInsertDto): Game {
+      val contestSearch = contestRepository.findById(contestId)
+
+      if(contestSearch.isPresent.not())
+         throw GameEventException(GameEventException.CONTEST_NOT_FOUND)
+
+      val gameSearch = gameService.getGame(gameId)
+
+      if(gameSearch.isPresent.not())
+         throw GameEventException(GameEventException.GAME_NOT_FOUND)
+
+      val game = gameSearch.get()
+
+      validateIfGameIsRunning(game)
+
+      val newReplacement = replacementService.createReplacement(replacementInsertDto)
+      newReplacement.game = game
+      game.replacements.add(newReplacement)
 
       return gameService.updateGame(game)
    }

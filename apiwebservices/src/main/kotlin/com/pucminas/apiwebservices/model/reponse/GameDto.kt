@@ -14,7 +14,8 @@ data class GameResponseDto(
         val goals: List<GoalPartialResponseDto> = emptyList(),
         val intervals: List<IntervalResponseDto> = emptyList(),
         val increments: List<IncrementResponseDto> = emptyList(),
-        val warnings: List<WarningResponseDto> = emptyList()
+        val warnings: List<WarningResponseDto> = emptyList(),
+        val replacements: List<ReplacementResponseDto> = emptyList()
 ) {
     companion object {
         fun fromGame(game: Game): GameResponseDto {
@@ -28,7 +29,8 @@ data class GameResponseDto(
                 goals = game.goals.map { GoalPartialResponseDto.fromGoal(it) },
                 intervals = game.intervalls.map { IntervalResponseDto.fromInterval(it) },
                 increments = game.increments.map { IncrementResponseDto.fromIncrement(it) },
-                warnings = game.warnings.map { WarningResponseDto.fromWarning(it) }
+                warnings = game.warnings.map { WarningResponseDto.fromWarning(it) },
+                replacements = game.replacements.map { ReplacementResponseDto.fromReplacement(it) }
             )
         }
     }

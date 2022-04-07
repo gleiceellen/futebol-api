@@ -94,4 +94,14 @@ class ContestController(
         val game = contestService.registerWarning(contestId, gameId, warningInsertDto)
         return ResponseEntity.ok(ContestResponseDto.fromContest(game.contest!!))
     }
+
+    @PostMapping("/contests/{contest-id}/games/{game-id}/events/replacement")
+    fun registerReplacement(
+            @PathVariable(value = "contest-id") contestId: Long,
+            @PathVariable(value = "game-id") gameId: Long,
+            @RequestBody replacementInsertDto: ReplacementInsertDto
+    ): ResponseEntity<*> {
+        val game = contestService.registerReplacement(contestId, gameId, replacementInsertDto)
+        return ResponseEntity.ok(ContestResponseDto.fromContest(game.contest!!))
+    }
 }

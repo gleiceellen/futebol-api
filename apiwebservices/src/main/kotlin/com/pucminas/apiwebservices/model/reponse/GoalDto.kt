@@ -8,18 +8,7 @@ data class GoalResponseDto(
     val game: GameResponseDto,
     val date: String
 )
-{
-    companion object {
-        fun fromGoal(goal: Goal): GoalResponseDto {
-            return GoalResponseDto(
-                  club = ClubPartialResponseDto.fromClub(goal.club),
-                  player = PlayerPartialResponseDto.fromPlayer(goal.player ),
-                  game = GameResponseDto.fromGame(goal.game!!),
-                  date = goal.date
-            )
-        }
-    }
-}
+
 
 data class GoalPartialResponseDto(
         val club: ClubPartialResponseDto,
