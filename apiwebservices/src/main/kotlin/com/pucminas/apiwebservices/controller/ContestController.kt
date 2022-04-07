@@ -3,6 +3,7 @@ package com.pucminas.apiwebservices.controller
 import com.pucminas.apiwebservices.model.reponse.ContestResponseDto
 import com.pucminas.apiwebservices.model.reponse.TransferResponseDto
 import com.pucminas.apiwebservices.model.request.ContestInsertDto
+import com.pucminas.apiwebservices.model.request.GameInsertDto
 import com.pucminas.apiwebservices.model.request.TransferInsertDto
 import com.pucminas.apiwebservices.service.ContestService
 import com.pucminas.apiwebservices.service.TransferService
@@ -15,7 +16,7 @@ class ContestController(
     private val contestService: ContestService
 ) {
     @PostMapping("/contests")
-    fun createClub(
+    fun createContest(
         @RequestBody contestInsertDto: ContestInsertDto
     ): ResponseEntity<*> {
         val contest = contestService.createContest(contestInsertDto)
@@ -23,9 +24,18 @@ class ContestController(
     }
 
     @GetMapping("/contests")
-    fun createClub(): ResponseEntity<*> {
+    fun getContests(): ResponseEntity<*> {
         val contests = contestService.getContests()
         val contestResponse = contests.map { ContestResponseDto.fromContest(it) }
         return ResponseEntity.ok(contestResponse)
+    }
+
+    @PostMapping("/contests/{id}/games")
+    fun createGame(
+            @PathVariable(value = "id") contestId: Long,
+            @RequestBody gameInsertDto: GameInsertDto
+    ): ResponseEntity<*> {
+        val game = contestService.createGame(contestId, gameInsertDto)
+        return ResponseEntity.ok(ContestResponseDto.fromContest(game.contest!!))
     }
 }
