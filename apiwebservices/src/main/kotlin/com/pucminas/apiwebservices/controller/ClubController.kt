@@ -2,6 +2,7 @@ package com.pucminas.apiwebservices.controller
 
 
 import com.pucminas.apiwebservices.model.Club
+import com.pucminas.apiwebservices.model.reponse.ClubResponseDto
 import com.pucminas.apiwebservices.model.request.ClubInsertDto
 import com.pucminas.apiwebservices.model.request.ClubUpdateDto
 import com.pucminas.apiwebservices.service.ClubService
@@ -15,13 +16,15 @@ class ClubController(
 ) {
 
     @PostMapping("/club")
-    fun createClub(@RequestBody club: ClubInsertDto): ResponseEntity<Club> {
-        return ResponseEntity.ok(clubService.createClub(club))
+    fun createClub(@RequestBody club: ClubInsertDto): ResponseEntity<ClubResponseDto> {
+        return ResponseEntity.ok(ClubResponseDto.fromClub(clubService.createClub(club)) )
     }
 
     @GetMapping("/club")
     fun getClub(): ResponseEntity<*> {
-        return ResponseEntity.ok(clubService.getClubs())
+        val clubs = clubService.getClubs()
+        val clubsResponse = clubs.map { ClubResponseDto.fromClub(it) }
+        return ResponseEntity.ok(clubsResponse)
     }
 
     @GetMapping("/club/{id}")
@@ -31,15 +34,15 @@ class ClubController(
         return if(club == null)
             ResponseEntity<Any>(HttpStatus.NOT_FOUND)
         else
-            ResponseEntity.ok(club)
+            ResponseEntity.ok(ClubResponseDto.fromClub(club))
     }
 
     @PutMapping("/club/{id}")
     fun updateClub(
             @PathVariable(value = "id") clubId: Long,
             @RequestBody club: ClubUpdateDto
-    ): ResponseEntity<Club> {
-        return ResponseEntity.ok(clubService.updateClub(club, clubId))
+    ): ResponseEntity<*> {
+        return ResponseEntity.ok(ClubResponseDto.fromClub(clubService.updateClub(club, clubId)))
     }
 
     @DeleteMapping("/club/{id}")

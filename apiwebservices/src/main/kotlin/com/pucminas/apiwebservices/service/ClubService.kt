@@ -7,12 +7,14 @@ import com.pucminas.apiwebservices.model.request.ClubUpdateDto
 import com.pucminas.apiwebservices.model.request.toClub
 import com.pucminas.apiwebservices.repository.ClubRepository
 import com.pucminas.apiwebservices.exception.ClubUpdateException
+import com.pucminas.apiwebservices.model.Player
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class ClubService(
-    private val clubRepository: ClubRepository
+    private val clubRepository: ClubRepository,
+    private val playerService: PlayerService
 ){
     fun getClubs(): List<Club> {
         return clubRepository.findAll()
@@ -29,10 +31,22 @@ class ClubService(
     }
 
     fun createClub(clubInsert: ClubInsertDto): Club {
-        return clubRepository.save(clubInsert.toClub())
+
+        val club = clubInsert.toClub()
+        val playersWithClub = mutableListOf<Player>()
+
+        club.players.forEach { player ->
+            player.club = club
+            playersWithClub.add(player)
+        }
+
+        club.players.clear()
+        club.players.addAll(playersWithClub)
+
+        return clubRepository.save(club)
     }
 
-    fun updateClub(club: ClubUpdateDto, clubId: Long): Club? {
+    fun updateClub(club: ClubUpdateDto, clubId: Long): Club {
         val search = clubRepository.findById(clubId)
 
         return if(search.isPresent) {
@@ -97,3 +111,4 @@ class ClubService(
         else throw ClubUpdateException(ClubUpdateException.NOT_FOUND)
     }
 }
+

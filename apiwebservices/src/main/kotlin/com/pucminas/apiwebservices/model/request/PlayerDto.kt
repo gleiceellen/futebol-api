@@ -1,5 +1,6 @@
 package com.pucminas.apiwebservices.model.request
 
+import com.pucminas.apiwebservices.model.Club
 import com.pucminas.apiwebservices.model.Player
 
 data class PlayerUpdateDto(
@@ -18,4 +19,11 @@ fun PlayerInsertDto.toPlayer() = Player(
         name = this.name,
         birthDate = this.birthDate,
         country = this.country
+)
+
+fun PlayerInsertDto.toPlayerWithClub(club: Club) = Player(
+        name = this.name,
+        birthDate = this.birthDate,
+        country = this.country,
+        club = club
 )

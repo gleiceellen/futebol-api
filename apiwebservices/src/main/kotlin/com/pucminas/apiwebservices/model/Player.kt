@@ -11,6 +11,7 @@ class Player(
         val name: String,
         val birthDate: String,
         val country: String,
+
         @ManyToOne
-        val club: Club? = null
+        var club: Club? = null
 )

@@ -1,5 +1,6 @@
 package com.pucminas.apiwebservices.controller
 
+import com.pucminas.apiwebservices.model.reponse.PlayerResponseDto
 import com.pucminas.apiwebservices.service.PlayerService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -13,7 +14,8 @@ class PlayerController(
 ){
     @GetMapping("/players")
     fun getClub(): ResponseEntity<*> {
-        return ResponseEntity.ok(playerService.getPLayers())
+        val players = playerService.getPLayers().map { PlayerResponseDto.fromPlayer(it) }
+        return ResponseEntity.ok(players )
     }
 
     @GetMapping("/players/{id}")
@@ -23,6 +25,6 @@ class PlayerController(
         return if(player == null)
             ResponseEntity<Any>(HttpStatus.NOT_FOUND)
         else
-            ResponseEntity.ok(player)
+            ResponseEntity.ok(PlayerResponseDto.fromPlayer(player))
     }
 }

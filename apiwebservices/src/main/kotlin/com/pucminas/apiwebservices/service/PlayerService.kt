@@ -21,4 +21,8 @@ class PlayerService(
         else
             null
     }
+
+    fun deletePlayer(playerId: Long) {
+        playerRepository.deleteById(playerId)
+    }
 }
