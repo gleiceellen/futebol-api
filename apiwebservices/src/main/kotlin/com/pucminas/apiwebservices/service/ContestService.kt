@@ -14,7 +14,8 @@ import java.util.*
 class ContestService(
     private val contestRepository: ContestRepository,
     private val gameService: GameService,
-    private val goalService: GoalService
+    private val goalService: GoalService,
+    private val intervalService: IntervalService
 
 ) {
 
@@ -124,5 +125,27 @@ class ContestService(
 
       if (game.endTime != null)
          throw GameEventException(GameEventException.GAME_ALREADY_FINISHED)
+   }
+
+   fun registerInterval(contestId: Long, gameId: Long, intervalInsertDto: IntervalInsertDto): Game {
+      val contestSearch = contestRepository.findById(contestId)
+
+      if(contestSearch.isPresent.not())
+         throw GameEventException(GameEventException.CONTEST_NOT_FOUND)
+
+      val gameSearch = gameService.getGame(gameId)
+
+      if(gameSearch.isPresent.not())
+         throw GameEventException(GameEventException.GAME_NOT_FOUND)
+
+      val game = gameSearch.get()
+
+      validateIfGameIsRunning(game)
+
+      val newInterval = intervalService.createInterval(intervalInsertDto)
+      newInterval.game = game
+      game.intervalls.add(newInterval)
+
+      return gameService.updateGame(game)
    }
 }

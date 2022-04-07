@@ -1,8 +1,6 @@
 package com.pucminas.apiwebservices.model.reponse
 
 
-import com.pucminas.apiwebservices.model.Club
-import com.pucminas.apiwebservices.model.Contest
 import com.pucminas.apiwebservices.model.Game
 
 data class GameResponseDto(
@@ -13,7 +11,8 @@ data class GameResponseDto(
         val startTime: String? = null,
         val endTime: String? = null,
 
-        val goals: List<GoalPartialResponseDto> = emptyList()
+        val goals: List<GoalPartialResponseDto> = emptyList(),
+        val intervals: List<IntervalResponseDto> = emptyList()
 ) {
     companion object {
         fun fromGame(game: Game): GameResponseDto {
@@ -24,7 +23,8 @@ data class GameResponseDto(
                     date = game.date,
                     startTime = game.startTime,
                     endTime = game.endTime,
-                    goals = game.goals.map { GoalPartialResponseDto.fromGoal(it) }
+                    goals = game.goals.map { GoalPartialResponseDto.fromGoal(it) },
+                    intervals = game.intervalls.map { IntervalResponseDto.fromInterval(it) }
             )
         }
     }

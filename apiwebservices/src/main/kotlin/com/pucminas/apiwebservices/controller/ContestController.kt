@@ -2,10 +2,7 @@ package com.pucminas.apiwebservices.controller
 
 import com.pucminas.apiwebservices.model.reponse.ContestResponseDto
 import com.pucminas.apiwebservices.model.reponse.TransferResponseDto
-import com.pucminas.apiwebservices.model.request.ContestInsertDto
-import com.pucminas.apiwebservices.model.request.GameInsertDto
-import com.pucminas.apiwebservices.model.request.GoalInsertDto
-import com.pucminas.apiwebservices.model.request.TransferInsertDto
+import com.pucminas.apiwebservices.model.request.*
 import com.pucminas.apiwebservices.service.ContestService
 import com.pucminas.apiwebservices.service.TransferService
 import org.springframework.http.HttpStatus
@@ -59,12 +56,22 @@ class ContestController(
     }
 
     @PostMapping("/contests/{contest-id}/games/{game-id}/events/goal")
-    fun finishGame(
+    fun registerGoal(
             @PathVariable(value = "contest-id") contestId: Long,
             @PathVariable(value = "game-id") gameId: Long,
             @RequestBody goalInsertDto: GoalInsertDto
     ): ResponseEntity<*> {
         val game = contestService.registerGoal(contestId, gameId, goalInsertDto)
+        return ResponseEntity.ok(ContestResponseDto.fromContest(game.contest!!))
+    }
+
+    @PostMapping("/contests/{contest-id}/games/{game-id}/events/interval")
+    fun registerInterval(
+            @PathVariable(value = "contest-id") contestId: Long,
+            @PathVariable(value = "game-id") gameId: Long,
+            @RequestBody intervalInsertDto: IntervalInsertDto
+    ): ResponseEntity<*> {
+        val game = contestService.registerInterval(contestId, gameId, intervalInsertDto)
         return ResponseEntity.ok(ContestResponseDto.fromContest(game.contest!!))
     }
 }
