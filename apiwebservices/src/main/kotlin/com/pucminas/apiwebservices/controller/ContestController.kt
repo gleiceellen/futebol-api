@@ -84,4 +84,14 @@ class ContestController(
         val game = contestService.registerIncrement(contestId, gameId, incrementInsertDto)
         return ResponseEntity.ok(ContestResponseDto.fromContest(game.contest!!))
     }
+
+    @PostMapping("/contests/{contest-id}/games/{game-id}/events/warning")
+    fun registerWarning(
+            @PathVariable(value = "contest-id") contestId: Long,
+            @PathVariable(value = "game-id") gameId: Long,
+            @RequestBody warningInsertDto: WarningInsertDto
+    ): ResponseEntity<*> {
+        val game = contestService.registerWarning(contestId, gameId, warningInsertDto)
+        return ResponseEntity.ok(ContestResponseDto.fromContest(game.contest!!))
+    }
 }

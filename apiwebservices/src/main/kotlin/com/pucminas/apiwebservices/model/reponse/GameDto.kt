@@ -13,20 +13,22 @@ data class GameResponseDto(
 
         val goals: List<GoalPartialResponseDto> = emptyList(),
         val intervals: List<IntervalResponseDto> = emptyList(),
-        val increment: List<IncrementResponseDto> = emptyList()
+        val increments: List<IncrementResponseDto> = emptyList(),
+        val warnings: List<WarningResponseDto> = emptyList()
 ) {
     companion object {
         fun fromGame(game: Game): GameResponseDto {
             return GameResponseDto(
-                    id = game.id!!,
-                    ownerClub = ClubPartialResponseDto.fromClub(game.ownerClub),
-                    guestClub = ClubPartialResponseDto.fromClub(game.guestClub),
-                    date = game.date,
-                    startTime = game.startTime,
-                    endTime = game.endTime,
-                    goals = game.goals.map { GoalPartialResponseDto.fromGoal(it) },
-                    intervals = game.intervalls.map { IntervalResponseDto.fromInterval(it) },
-                    increment = game.increments.map { IncrementResponseDto.fromIncrement(it) }
+                id = game.id!!,
+                ownerClub = ClubPartialResponseDto.fromClub(game.ownerClub),
+                guestClub = ClubPartialResponseDto.fromClub(game.guestClub),
+                date = game.date,
+                startTime = game.startTime,
+                endTime = game.endTime,
+                goals = game.goals.map { GoalPartialResponseDto.fromGoal(it) },
+                intervals = game.intervalls.map { IntervalResponseDto.fromInterval(it) },
+                increments = game.increments.map { IncrementResponseDto.fromIncrement(it) },
+                warnings = game.warnings.map { WarningResponseDto.fromWarning(it) }
             )
         }
     }
