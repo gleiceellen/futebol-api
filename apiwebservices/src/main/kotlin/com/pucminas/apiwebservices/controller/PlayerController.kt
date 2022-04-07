@@ -1,12 +1,13 @@
 package com.pucminas.apiwebservices.controller
 
+import com.pucminas.apiwebservices.model.reponse.ClubResponseDto
 import com.pucminas.apiwebservices.model.reponse.PlayerResponseDto
+import com.pucminas.apiwebservices.model.request.ClubUpdateDto
+import com.pucminas.apiwebservices.model.request.PlayerUpdateDto
 import com.pucminas.apiwebservices.service.PlayerService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class PlayerController(
@@ -26,5 +27,13 @@ class PlayerController(
             ResponseEntity<Any>(HttpStatus.NOT_FOUND)
         else
             ResponseEntity.ok(PlayerResponseDto.fromPlayer(player))
+    }
+
+    @PutMapping("/players/{id}")
+    fun updateClub(
+            @PathVariable(value = "id") playerId: Long,
+            @RequestBody playerUpdateDto: PlayerUpdateDto
+    ): ResponseEntity<*> {
+        return ResponseEntity.ok(PlayerResponseDto.fromPlayer(playerService.updatePlayer(playerId, playerUpdateDto)))
     }
 }
