@@ -12,6 +12,8 @@ data class GameResponseDto(
         val date: String,
         val startTime: String? = null,
         val endTime: String? = null,
+
+        val goals: List<GoalPartialResponseDto> = emptyList()
 ) {
     companion object {
         fun fromGame(game: Game): GameResponseDto {
@@ -21,7 +23,8 @@ data class GameResponseDto(
                     guestClub = ClubPartialResponseDto.fromClub(game.guestClub),
                     date = game.date,
                     startTime = game.startTime,
-                    endTime = game.endTime
+                    endTime = game.endTime,
+                    goals = game.goals.map { GoalPartialResponseDto.fromGoal(it) }
             )
         }
     }

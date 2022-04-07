@@ -7,14 +7,4 @@ data class GameInsertDto(
     val ownerClubId: Long,
     val guestClubId: Long,
     val date: String
-) {
-    companion object {
-        fun fromGame(game: Game): GameInsertDto {
-            return GameInsertDto(
-                    ownerClubId = game.ownerClub.id!!,
-                    guestClubId = game.guestClub.id!!,
-                    date = game.date
-            )
-        }
-    }
-}
+)
