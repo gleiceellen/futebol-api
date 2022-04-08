@@ -7,6 +7,7 @@ import com.pucminas.apiwebservices.model.request.ClubUpdateDto
 import com.pucminas.apiwebservices.model.request.toClub
 import com.pucminas.apiwebservices.repository.ClubRepository
 import com.pucminas.apiwebservices.exception.ClubUpdateException
+import com.pucminas.apiwebservices.exception.TransferCreateException
 import com.pucminas.apiwebservices.model.Player
 import org.springframework.stereotype.Service
 import java.util.*
@@ -73,7 +74,8 @@ class ClubService(
         val clubUpdated = Club(
                 id = clubStored.id,
                 name = club.name ?: clubStored.name,
-                location = club.location ?: clubStored.location
+                location = club.location ?: clubStored.location,
+                players = clubStored.players
         )
         return clubRepository.save(clubUpdated)
     }
@@ -98,7 +100,7 @@ class ClubService(
         val entity = clubRepository.findById(clubId)
 
         return if(entity.isPresent) {
-            removeExistentPlayer(entity, playerId)
+            removeFromExistentClub(entity, playerId)
         }
         else throw ClubUpdateException(ClubUpdateException.NOT_FOUND)
     }
@@ -107,6 +109,11 @@ class ClubService(
             club: Club,
             player: Player
     ) {
+
+        val existentPLayer = club.players.find { it -> player.id == it.id }
+        if(existentPLayer != null)
+            throw ClubUpdateException(ClubUpdateException.PLAYER_ALREADY_REGISTERED)
+
         club.players.add(player)
         player.club = club
 
@@ -114,11 +121,11 @@ class ClubService(
         playerService.updatePlayer(player)
     }
 
-    private fun removeExistentPlayer(entity: Optional<Club>, playerId: Long): String {
+    private fun removeFromExistentClub(entity: Optional<Club>, playerId: Long): String {
         val club = entity.get()
         val player = club.players
                 .find { it.id == playerId }
-                ?: throw ClubUpdateException(ClubUpdateException.PLAYER_NOT_FOUND)
+                ?: return "player not registered"
 
         club.players.remove(player)
         clubRepository.save(club)
